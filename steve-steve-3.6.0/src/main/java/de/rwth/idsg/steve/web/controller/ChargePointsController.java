@@ -1,6 +1,6 @@
 /*
  * SteVe - SteckdosenVerwaltung - https://github.com/steve-community/steve
- * Copyright (C) ${license.git.copyrightYears} SteVe Community Team
+ * Copyright (C) 2013-2025 SteVe Community Team
  * All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,46 +44,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author Sevket Goekay <sevketgokay@gmail.com>
- *
  */
 @Controller
 @RequestMapping(value = "/manager/chargepoints")
 public class ChargePointsController {
 
-    @Autowired protected ChargePointRepository chargePointRepository;
-    @Autowired protected ChargePointHelperService chargePointHelperService;
-
     protected static final String PARAMS = "params";
-
-    private static final List<String> upToOcpp15RegistrationStatusList = Arrays.stream(ocpp.cs._2012._06.RegistrationStatus.values())
-                                                                               .map(ocpp.cs._2012._06.RegistrationStatus::value)
-                                                                               .collect(Collectors.toList());
-
-    private static final List<String> ocpp16RegistrationStatusList = Arrays.stream(ocpp.cs._2015._10.RegistrationStatus.values())
-                                                                           .map(ocpp.cs._2015._10.RegistrationStatus::value)
-                                                                           .collect(Collectors.toList());
+    protected static final String QUERY_PATH = "/query";
+    protected static final String DETAILS_PATH = "/details/{chargeBoxPk}";
+    protected static final String DELETE_PATH = "/delete/{chargeBoxPk}";
+    protected static final String UPDATE_PATH = "/update";
 
     // -------------------------------------------------------------------------
     // Paths
     // -------------------------------------------------------------------------
-
-    protected static final String QUERY_PATH = "/query";
-
-    protected static final String DETAILS_PATH = "/details/{chargeBoxPk}";
-    protected static final String DELETE_PATH = "/delete/{chargeBoxPk}";
-    protected static final String UPDATE_PATH = "/update";
     protected static final String ADD_PATH = "/add";
-
     protected static final String ADD_SINGLE_PATH = "/add/single";
     protected static final String ADD_BATCH_PATH = "/add/batch";
-
     // We need the slash at the end to support chargeBoxIds with dots etc. in them
     // Issue: https://github.com/steve-community/steve/issues/270
     // Solution: https://stackoverflow.com/a/18378817
     protected static final String UNKNOWN_REMOVE_PATH = "/unknown/remove/{chargeBoxId}/";
     protected static final String UNKNOWN_ADD_PATH = "/unknown/add/{chargeBoxId}/";
+    private static final List<String> upToOcpp15RegistrationStatusList = Arrays.stream(ocpp.cs._2012._06.RegistrationStatus.values())
+            .map(ocpp.cs._2012._06.RegistrationStatus::value)
+            .collect(Collectors.toList());
+    private static final List<String> ocpp16RegistrationStatusList = Arrays.stream(ocpp.cs._2015._10.RegistrationStatus.values())
+            .map(ocpp.cs._2015._10.RegistrationStatus::value)
+            .collect(Collectors.toList());
+    @Autowired
+    protected ChargePointRepository chargePointRepository;
+    @Autowired
+    protected ChargePointHelperService chargePointHelperService;
 
     // -------------------------------------------------------------------------
     // HTTP methods

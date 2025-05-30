@@ -1,6 +1,6 @@
 /*
  * SteVe - SteckdosenVerwaltung - https://github.com/steve-community/steve
- * Copyright (C) ${license.git.copyrightYears} SteVe Community Team
+ * Copyright (C) 2013-2025 SteVe Community Team
  * All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,6 +67,7 @@ public class ChargePointQueryForm {
         @Getter private final String value;
 
         public static QueryPeriodType fromValue(String v) {
+            System.out.println("hiiii");
             for (QueryPeriodType c: QueryPeriodType.values()) {
                 if (c.value.equals(v)) {
                     return c;
