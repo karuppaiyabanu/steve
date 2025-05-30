@@ -64,7 +64,7 @@ public enum LogFileRetriever {
 
     public String getLogFilePathOrErrorMessage() {
         return getPath().map(path -> path.toAbsolutePath().toString())
-                        .orElseGet(this::getErrorMessage);
+                .orElseGet(this::getErrorMessage);
     }
 
     public String getErrorMessage() {
@@ -102,7 +102,6 @@ public enum LogFileRetriever {
                 fileNameList.add(Paths.get(fileName));
             }
         }
-        System.out.println(fileNameList);
         return fileNameList;
     }
 

@@ -47,7 +47,6 @@ public class LogController {
 
         try (PrintWriter writer = response.getWriter()) {
             Optional<Path> p = LogFileRetriever.INSTANCE.getPath();
-            System.out.println(p);
             if (p.isPresent()) {
                 Files.lines(p.get(), StandardCharsets.UTF_8)
                         .forEach(writer::println);

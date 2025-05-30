@@ -22,17 +22,7 @@ import de.rwth.idsg.steve.ocpp.OcppVersion;
 import de.rwth.idsg.steve.service.ChargePointHelperService;
 import de.rwth.idsg.steve.service.ChargePointService12_Client;
 import de.rwth.idsg.steve.service.OcppTagService;
-import de.rwth.idsg.steve.web.dto.ocpp.ChangeAvailabilityParams;
-import de.rwth.idsg.steve.web.dto.ocpp.ChangeConfigurationParams;
-import de.rwth.idsg.steve.web.dto.ocpp.ConfigurationKeyEnum;
-import de.rwth.idsg.steve.web.dto.ocpp.ConfigurationKeyReadWriteEnum;
-import de.rwth.idsg.steve.web.dto.ocpp.GetDiagnosticsParams;
-import de.rwth.idsg.steve.web.dto.ocpp.MultipleChargePointSelect;
-import de.rwth.idsg.steve.web.dto.ocpp.RemoteStartTransactionParams;
-import de.rwth.idsg.steve.web.dto.ocpp.RemoteStopTransactionParams;
-import de.rwth.idsg.steve.web.dto.ocpp.ResetParams;
-import de.rwth.idsg.steve.web.dto.ocpp.UnlockConnectorParams;
-import de.rwth.idsg.steve.web.dto.ocpp.UpdateFirmwareParams;
+import de.rwth.idsg.steve.web.dto.ocpp.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -55,21 +45,14 @@ import static de.rwth.idsg.steve.web.dto.ocpp.ConfigurationKeyReadWriteEnum.RW;
 @RequestMapping(value = "/manager/operations/v1.2")
 public class Ocpp12Controller {
 
-    @Autowired protected ChargePointHelperService chargePointHelperService;
-    @Autowired protected OcppTagService ocppTagService;
-
-    @Autowired
-    @Qualifier("ChargePointService12_Client")
-    private ChargePointService12_Client client12;
-
     protected static final String PARAMS = "params";
+    protected static final String CHANGE_CONF_PATH = "/ChangeConfiguration";
+    protected static final String REDIRECT_TASKS_PATH = "redirect:/manager/operations/tasks/";
+    private static final String CHANGE_AVAIL_PATH = "/ChangeAvailability";
 
     // -------------------------------------------------------------------------
     // Paths
     // -------------------------------------------------------------------------
-
-    private static final String CHANGE_AVAIL_PATH = "/ChangeAvailability";
-    protected static final String CHANGE_CONF_PATH = "/ChangeConfiguration";
     private static final String CLEAR_CACHE_PATH = "/ClearCache";
     private static final String GET_DIAG_PATH = "/GetDiagnostics";
     private static final String REMOTE_START_TX_PATH = "/RemoteStartTransaction";
@@ -77,8 +60,13 @@ public class Ocpp12Controller {
     private static final String RESET_PATH = "/Reset";
     private static final String UNLOCK_CON_PATH = "/UnlockConnector";
     private static final String UPDATE_FIRM_PATH = "/UpdateFirmware";
-
-    protected static final String REDIRECT_TASKS_PATH = "redirect:/manager/operations/tasks/";
+    @Autowired
+    protected ChargePointHelperService chargePointHelperService;
+    @Autowired
+    protected OcppTagService ocppTagService;
+    @Autowired
+    @Qualifier("ChargePointService12_Client")
+    private ChargePointService12_Client client12;
 
     // -------------------------------------------------------------------------
     // Helpers
@@ -158,7 +146,6 @@ public class Ocpp12Controller {
         setCommonAttributesForTx(model);
         setActiveUserIdTagList(model);
         model.addAttribute(PARAMS, new RemoteStartTransactionParams());
-        System.out.println(getPrefix() + REMOTE_START_TX_PATH);
         return getPrefix() + REMOTE_START_TX_PATH;
     }
 
@@ -238,10 +225,6 @@ public class Ocpp12Controller {
     @RequestMapping(value = REMOTE_START_TX_PATH, method = RequestMethod.POST)
     public String postRemoteStartTx(@Valid @ModelAttribute(PARAMS) RemoteStartTransactionParams params,
                                     BindingResult result, Model model) {
-
-        System.out.println(model);
-        System.out.println(result);
-        System.out.println(params);
         if (result.hasErrors()) {
             setCommonAttributesForTx(model);
             setActiveUserIdTagList(model);

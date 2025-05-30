@@ -64,11 +64,11 @@ public class ChargePointQueryForm {
         YESTERDAY("Yesterday"),
         EARLIER("Earlier");
 
-        @Getter private final String value;
+        @Getter
+        private final String value;
 
         public static QueryPeriodType fromValue(String v) {
-            System.out.println("hiiii");
-            for (QueryPeriodType c: QueryPeriodType.values()) {
+            for (QueryPeriodType c : QueryPeriodType.values()) {
                 if (c.value.equals(v)) {
                     return c;
                 }

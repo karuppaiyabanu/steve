@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * ApplicationStarter for PROD profile
- *
+ * <p>
  * Since we log everything to a file, it can be confusing for the user to see nothing written to console, when starting
  * the app. So, this class prints some stuff to console.
  *
@@ -46,6 +46,20 @@ public class SteveProdStarter implements ApplicationStarter {
     SteveProdStarter() {
         this.jettyServer = new JettyServer();
     }
+
+    private static String sep() {
+        return System.lineSeparator();
+    }
+
+    private static void println(String s) {
+    }
+
+    private static void print(String s) {
+    }
+
+    // -------------------------------------------------------------------------
+    // Private helpers
+    // -------------------------------------------------------------------------
 
     @Override
     public void start() throws Exception {
@@ -79,10 +93,6 @@ public class SteveProdStarter implements ApplicationStarter {
     public void stop() throws Exception {
         jettyServer.stop();
     }
-
-    // -------------------------------------------------------------------------
-    // Private helpers
-    // -------------------------------------------------------------------------
 
     private void starting() {
         String msg = "Log file: "
@@ -121,35 +131,23 @@ public class SteveProdStarter implements ApplicationStarter {
     }
 
     private void printInfo(EndpointInfo.ItemsWithInfo itemsWithInfo) {
-        StringBuilder sb  = new StringBuilder(itemsWithInfo.getInfo())
+        StringBuilder sb = new StringBuilder(itemsWithInfo.getInfo())
                 .append(sep());
 
         Iterator<String> it = itemsWithInfo.getData().iterator();
 
         if (it.hasNext()) {
             sb.append("- ")
-              .append(it.next());
+                    .append(it.next());
 
             while (it.hasNext()) {
                 sb.append(sep())
-                  .append("- ")
-                  .append(it.next());
+                        .append("- ")
+                        .append(it.next());
             }
         }
 
         println(sb.toString());
-    }
-
-    private static String sep() {
-        return System.lineSeparator();
-    }
-
-    private static void println(String s) {
-        System.out.println(s);
-    }
-
-    private static void print(String s) {
-        System.out.print(s);
     }
 
     // -------------------------------------------------------------------------

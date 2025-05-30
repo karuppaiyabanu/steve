@@ -160,7 +160,6 @@ public class OcppTagsController {
 
     private void initList(Model model, OcppTagQueryForm params) {
         model.addAttribute(PARAMS, params);
-        System.out.println("initList");
         model.addAttribute("idTagList", ocppTagService.getIdTags());
         model.addAttribute("parentIdTagList", ocppTagService.getParentIdTags());
         model.addAttribute("ocppTagList", ocppTagService.getOverview(params));
