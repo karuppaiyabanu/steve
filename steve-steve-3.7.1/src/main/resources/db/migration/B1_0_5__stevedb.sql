@@ -333,6 +333,7 @@ CREATE TABLE `customise` (
   connector_pk INT(11) UNSIGNED DEFAULT NULL,
   `event_timestamp` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   voltage DOUBLE DEFAULT NULL,
+  current DOUBLE DEFAULT NULL,
   power DOUBLE DEFAULT NULL,
   energy DOUBLE DEFAULT NULL,
   soc DOUBLE DEFAULT NULL,

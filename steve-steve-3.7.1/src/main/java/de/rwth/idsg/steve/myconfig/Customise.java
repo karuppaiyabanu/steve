@@ -18,6 +18,9 @@
  */
 package de.rwth.idsg.steve.myconfig;
 
+import lombok.Data;
+
+@Data
 public class Customise {
 
     private int transactionPk;
@@ -26,54 +29,6 @@ public class Customise {
     private double power;
     private double energy;
     private double soc;
-
-    public int getTransactionPk() {
-        return transactionPk;
-    }
-
-    public void setTransactionPk(int transactionPk) {
-        this.transactionPk = transactionPk;
-    }
-
-    public int getConnectorPk() {
-        return connectorPk;
-    }
-
-    public void setConnectorPk(int connectorPk) {
-        this.connectorPk = connectorPk;
-    }
-
-    public double getVoltage() {
-        return voltage;
-    }
-
-    public void setVoltage(double voltage) {
-        this.voltage = voltage;
-    }
-
-    public double getPower() {
-        return power;
-    }
-
-    public void setPower(double power) {
-        this.power = power;
-    }
-
-    public double getEnergy() {
-        return energy;
-    }
-
-    public void setEnergy(double energy) {
-        this.energy = energy;
-    }
-
-    public double getSoc() {
-        return soc;
-    }
-
-    public void setSoc(double soc) {
-        this.soc = soc;
-    }
-
+    private double current;
 
 }

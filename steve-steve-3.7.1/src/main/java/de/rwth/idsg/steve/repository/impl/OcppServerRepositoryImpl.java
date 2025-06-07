@@ -23,7 +23,7 @@ import com.google.common.util.concurrent.Striped;
 import de.rwth.idsg.steve.SteveException;
 import de.rwth.idsg.steve.myconfig.Customise;
 import de.rwth.idsg.steve.myconfig.CustomiseTableService;
-import de.rwth.idsg.steve.myconfig.ToStoreData;
+import de.rwth.idsg.steve.myconfig.ToGetDataFromRequest;
 import de.rwth.idsg.steve.ocpp.OcppProtocol;
 import de.rwth.idsg.steve.repository.OcppServerRepository;
 import de.rwth.idsg.steve.repository.ReservationRepository;
@@ -459,13 +459,7 @@ public class OcppServerRepositoryImpl implements OcppServerRepository {
 
     private void batchInsertMeterValues(DSLContext ctx, List<MeterValue> list, int connectorPk, Integer transactionId) {
 
-        Customise c = ToStoreData.buildCustomiseTable(list, connectorPk, transactionId);
-        System.out.println(c.getConnectorPk());
-        System.out.println(c.getTransactionPk());
-        System.out.println("Energy  = " + c.getEnergy());
-        System.out.println("Soc  = " + c.getSoc());
-        System.out.println("Power  = " + c.getPower());
-        System.out.println("voltage  = " + c.getVoltage());
+        Customise c = ToGetDataFromRequest.buildCustomiseTable(list, connectorPk, transactionId);
 
         customiseTableService.insert(c);
         List<ConnectorMeterValueRecord> batch =

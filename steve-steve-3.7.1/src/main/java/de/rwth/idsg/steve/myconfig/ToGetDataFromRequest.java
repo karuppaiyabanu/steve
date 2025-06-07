@@ -24,7 +24,7 @@ import ocpp.cs._2015._10.SampledValue;
 import java.util.List;
 
 
-public class ToStoreData {
+public class ToGetDataFromRequest {
 
 
     public static Customise buildCustomiseTable(List<MeterValue> list, int connectorPk, Integer transactionId) {
@@ -37,7 +37,7 @@ public class ToStoreData {
             for (SampledValue sampledValue : meterValue.getSampledValue()) {
                 String measurand = sampledValue.isSetMeasurand() ? sampledValue.getMeasurand().value() : null;
                 String valueStr = sampledValue.getValue();
-
+                System.out.println("Print "+measurand);
                 if (measurand != null && valueStr != null) {
                     try {
                         double value = Double.parseDouble(valueStr);
@@ -55,6 +55,8 @@ public class ToStoreData {
                             case "SoC":
                                 customise.setSoc(value);
                                 break;
+                            case "Power.Offered":
+                                customise.setCurrent(value);
                             default:
 
                                 break;

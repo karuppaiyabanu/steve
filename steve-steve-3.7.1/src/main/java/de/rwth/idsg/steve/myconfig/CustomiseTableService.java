@@ -34,19 +34,18 @@ public class CustomiseTableService {
         this.dslContext = dslContext;
     }
 
-    public void insert(Customise p) {
-        System.out.println(p.getConnectorPk());
-        System.out.println(p.getTransactionPk());
+    public void insert(Customise customise) {
         try {
 
 
             dslContext.insertInto(CUSTOMISE)
-                    .set(CUSTOMISE.TRANSACTION_PK, p.getTransactionPk())
-                    .set(CUSTOMISE.CONNECTOR_PK, p.getConnectorPk())
-                    .set(CUSTOMISE.VOLTAGE, p.getVoltage())
-                    .set(CUSTOMISE.POWER, p.getPower())
-                    .set(CUSTOMISE.ENERGY, p.getEnergy())
-                    .set(CUSTOMISE.SOC, p.getSoc())
+                    .set(CUSTOMISE.TRANSACTION_PK, customise.getTransactionPk())
+                    .set(CUSTOMISE.CONNECTOR_PK, customise.getConnectorPk())
+                    .set(CUSTOMISE.VOLTAGE, customise.getVoltage())
+                    .set(CUSTOMISE.POWER, customise.getPower())
+                    .set(CUSTOMISE.ENERGY, customise.getEnergy())
+                    .set(CUSTOMISE.SOC, customise.getSoc())
+                    .set(CUSTOMISE.CURRENT, customise.getCurrent())
                     .execute();
         } catch (Exception e) {
             e.printStackTrace();
