@@ -342,6 +342,61 @@ CREATE TABLE `customise` (
   FOREIGN KEY (connector_pk) REFERENCES connector(connector_pk)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
+
+
+--
+DROP TABLE IF EXISTS transaction_details;
+CREATE TABLE transaction_details (
+   transaction_details_pk INT UNSIGNED NOT NULL AUTO_INCREMENT,
+   transaction_pk INT(11) UNSIGNED NOT NULL,
+   ocpp_tag_pk varchar(255) NOT NULL,
+   charge_box_id varchar(255) NOT NULL,
+   connector_id INT(11) UNSIGNED NOT NULL,
+   transaction_start_timestamp timestamp(6) DEFAULT NULL,
+   transaction_stop_timestamp timestamp(6) DEFAULT NULL,
+   current_start DOUBLE DEFAULT NULL,
+   current_stop DOUBLE DEFAULT NULL,
+   voltage_start DOUBLE DEFAULT NULL,
+   voltage_stop DOUBLE DEFAULT NULL,
+   power_start DOUBLE DEFAULT NULL,
+   power_stop DOUBLE DEFAULT NULL,
+   energy_start DOUBLE DEFAULT NULL,
+   energy_stop DOUBLE DEFAULT NULL,
+   soc_start DOUBLE DEFAULT NULL,
+   soc_stop DOUBLE DEFAULT NULL,
+ PRIMARY KEY (transaction_details_pk),
+
+ CONSTRAINT fk_transaction_details_ocpp_tag_pk
+ FOREIGN KEY (ocpp_tag_pk) REFERENCES ocpp_tag(id_tag),
+ CONSTRAINT fk_transaction_details_charge_box_id
+ FOREIGN KEY (charge_box_id) REFERENCES charge_box(charge_box_id),
+ CONSTRAINT fk_transaction_details_connector_id
+ FOREIGN KEY (connector_id) REFERENCES connector(connector_pk)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+
+DROP TABLE IF EXISTS transaction_new;
+CREATE TABLE transaction_new(
+   transaction_id_pk INT NOT NULL AUTO_INCREMENT,
+   connector_id INT(11) UNSIGNED NOT NULL,
+   ocpp_tag_pk varchar(255) NOT NULL,
+   start_event_timestamp timestamp(6) NULL DEFAULT NULL,
+   start_timestamp timestamp(6) NULL DEFAULT NULL,
+   start_value  varchar(255) NULL DEFAULT NULL,
+   stop_event_actor ENUM('MANUAL', 'STATION') NULL DEFAULT NULL,
+   stop_event_timestamp timestamp(6) NULL DEFAULT NULL,
+   stop_timestamp timestamp(6) NULL DEFAULT NULL,
+   stop_value  varchar(255) NULL DEFAULT NULL,
+   stop_reason  varchar(255) NULL DEFAULT NULL,
+   PRIMARY KEY (transaction_id_pk),
+   CONSTRAINT fk_transaction_new_connector_id
+   FOREIGN KEY (connector_id) REFERENCES connector(connector_pk),
+   CONSTRAINT fk_transaction_new_ocpp_tag_pk
+   FOREIGN KEY (ocpp_tag_pk) REFERENCES ocpp_tag(id_tag)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+
 --
 -- Table structure for table `user`
 --
