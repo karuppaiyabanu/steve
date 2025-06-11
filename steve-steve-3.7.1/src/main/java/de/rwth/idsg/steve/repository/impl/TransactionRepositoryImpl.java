@@ -69,24 +69,24 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public List<Transaction> getTransactions(TransactionQueryForm form) {
         return getInternal(form).fetch()
-                                .map(new TransactionMapper());
+                .map(new TransactionMapper());
     }
 
     @Override
     public void writeTransactionsCSV(TransactionQueryForm form, Writer writer) {
         getInternalCSV(form).fetch()
-                            .formatCSV(writer);
+                .formatCSV(writer);
     }
 
     @Override
     public List<Integer> getActiveTransactionIds(String chargeBoxId) {
         return ctx.select(TRANSACTION.TRANSACTION_PK)
-                  .from(TRANSACTION)
-                  .join(CONNECTOR)
-                    .on(TRANSACTION.CONNECTOR_PK.equal(CONNECTOR.CONNECTOR_PK))
-                    .and(CONNECTOR.CHARGE_BOX_ID.equal(chargeBoxId))
-                  .where(TRANSACTION.STOP_TIMESTAMP.isNull())
-                  .fetch(TRANSACTION.TRANSACTION_PK);
+                .from(TRANSACTION)
+                .join(CONNECTOR)
+                .on(TRANSACTION.CONNECTOR_PK.equal(CONNECTOR.CONNECTOR_PK))
+                .and(CONNECTOR.CHARGE_BOX_ID.equal(chargeBoxId))
+                .where(TRANSACTION.STOP_TIMESTAMP.isNull())
+                .fetch(TRANSACTION.TRANSACTION_PK);
     }
 
     @Override
@@ -131,14 +131,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             //
             // "what is the subsequent transaction at the same chargebox and connector?"
             nextTx = ctx.selectFrom(TRANSACTION_START)
-                        .where(TRANSACTION_START.CONNECTOR_PK.eq(ctx.select(CONNECTOR.CONNECTOR_PK)
-                                                                    .from(CONNECTOR)
-                                                                    .where(CONNECTOR.CHARGE_BOX_ID.equal(chargeBoxId))
-                                                                    .and(CONNECTOR.CONNECTOR_ID.equal(connectorId))))
-                        .and(TRANSACTION_START.START_TIMESTAMP.greaterThan(startTimestamp))
-                        .orderBy(TRANSACTION_START.START_TIMESTAMP)
-                        .limit(1)
-                        .fetchOne();
+                    .where(TRANSACTION_START.CONNECTOR_PK.eq(ctx.select(CONNECTOR.CONNECTOR_PK)
+                            .from(CONNECTOR)
+                            .where(CONNECTOR.CHARGE_BOX_ID.equal(chargeBoxId))
+                            .and(CONNECTOR.CONNECTOR_ID.equal(connectorId))))
+                    .and(TRANSACTION_START.START_TIMESTAMP.greaterThan(startTimestamp))
+                    .orderBy(TRANSACTION_START.START_TIMESTAMP)
+                    .limit(1)
+                    .fetchOne();
 
             if (nextTx == null) {
                 // the last active transaction
@@ -153,27 +153,27 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
         // https://github.com/steve-community/steve/issues/1514
         Condition unitCondition = CONNECTOR_METER_VALUE.UNIT.isNull()
-            .or(CONNECTOR_METER_VALUE.UNIT.in("", UnitOfMeasure.WH.value(), UnitOfMeasure.K_WH.value()));
+                .or(CONNECTOR_METER_VALUE.UNIT.in("", UnitOfMeasure.WH.value(), UnitOfMeasure.K_WH.value()));
 
         // Case 1: Ideal and most accurate case. Station sends meter values with transaction id set.
         //
         SelectQuery<ConnectorMeterValueRecord> transactionQuery =
                 ctx.selectFrom(CONNECTOR_METER_VALUE)
-                   .where(CONNECTOR_METER_VALUE.TRANSACTION_PK.eq(transactionPk))
-                   .and(unitCondition)
-                   .getQuery();
+                        .where(CONNECTOR_METER_VALUE.TRANSACTION_PK.eq(transactionPk))
+                        .and(unitCondition)
+                        .getQuery();
 
         // Case 2: Fall back to filtering according to time windows
         //
         SelectQuery<ConnectorMeterValueRecord> timestampQuery =
                 ctx.selectFrom(CONNECTOR_METER_VALUE)
-                   .where(CONNECTOR_METER_VALUE.CONNECTOR_PK.eq(ctx.select(CONNECTOR.CONNECTOR_PK)
-                                                                   .from(CONNECTOR)
-                                                                   .where(CONNECTOR.CHARGE_BOX_ID.eq(chargeBoxId))
-                                                                   .and(CONNECTOR.CONNECTOR_ID.eq(connectorId))))
-                   .and(timestampCondition)
-                   .and(unitCondition)
-                   .getQuery();
+                        .where(CONNECTOR_METER_VALUE.CONNECTOR_PK.eq(ctx.select(CONNECTOR.CONNECTOR_PK)
+                                .from(CONNECTOR)
+                                .where(CONNECTOR.CHARGE_BOX_ID.eq(chargeBoxId))
+                                .and(CONNECTOR.CONNECTOR_ID.eq(connectorId))))
+                        .and(timestampCondition)
+                        .and(unitCondition)
+                        .getQuery();
 
         // Actually, either case 1 applies or 2. If we retrieved values using 1, case 2 is should not be
         // executed (best case). In worst case (1 returns empty list and we fall back to case 2) though,
@@ -187,31 +187,31 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
         List<TransactionDetails.MeterValues> values =
                 ctx.select(
-                        dateTimeField,
-                        t1.field(3, String.class),
-                        t1.field(4, String.class),
-                        t1.field(5, String.class),
-                        t1.field(6, String.class),
-                        t1.field(7, String.class),
-                        t1.field(8, String.class),
-                        t1.field(9, String.class))
-                   .from(t1)
-                   .orderBy(dateTimeField)
-                   .fetch()
-                   .map(r -> TransactionDetails.MeterValues.builder()
-                                                           .valueTimestamp(r.value1())
-                                                           .value(r.value2())
-                                                           .readingContext(r.value3())
-                                                           .format(r.value4())
-                                                           .measurand(r.value5())
-                                                           .location(r.value6())
-                                                           .unit(r.value7())
-                                                           .phase(r.value8())
-                                                           .build())
-                   .stream()
-                   .filter(TransactionStopServiceHelper::isEnergyValue)
-                   .toList();
-         System.out.println("meter values....");
+                                dateTimeField,
+                                t1.field(3, String.class),
+                                t1.field(4, String.class),
+                                t1.field(5, String.class),
+                                t1.field(6, String.class),
+                                t1.field(7, String.class),
+                                t1.field(8, String.class),
+                                t1.field(9, String.class))
+                        .from(t1)
+                        .orderBy(dateTimeField)
+                        .fetch()
+                        .map(r -> TransactionDetails.MeterValues.builder()
+                                .valueTimestamp(r.value1())
+                                .value(r.value2())
+                                .readingContext(r.value3())
+                                .format(r.value4())
+                                .measurand(r.value5())
+                                .location(r.value6())
+                                .unit(r.value7())
+                                .phase(r.value8())
+                                .build())
+                        .stream()
+                        .filter(TransactionStopServiceHelper::isEnergyValue)
+                        .toList();
+        System.out.println("meter values....");
         return new TransactionDetails(new TransactionMapper().map(transaction), values, nextTx);
     }
 
@@ -220,8 +220,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     // -------------------------------------------------------------------------
 
     @SuppressWarnings("unchecked")
-    private
-    SelectQuery<Record9<Integer, String, Integer, String, DateTime, String, DateTime, String, String>>
+    private SelectQuery<Record9<Integer, String, Integer, String, DateTime, String, DateTime, String, String>>
     getInternalCSV(TransactionQueryForm form) {
 
         SelectQuery selectQuery = ctx.selectQuery();
@@ -247,8 +246,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
      * Joins with CHARGE_BOX and OCPP_TAG tables, selects CHARGE_BOX_PK and OCPP_TAG_PK additionally
      */
     @SuppressWarnings("unchecked")
-    private
-    SelectQuery<Record12<Integer, String, Integer, String, DateTime, String, DateTime, String, String, Integer, Integer, TransactionStopEventActor>>
+    private SelectQuery<Record12<Integer, String, Integer, String, DateTime, String, DateTime, String, String, Integer, Integer, TransactionStopEventActor>>
     getInternal(TransactionQueryForm form) {
 
         SelectQuery selectQuery = ctx.selectQuery();
@@ -338,21 +336,21 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         @Override
         public Transaction map(Record12<Integer, String, Integer, String, DateTime, String, DateTime, String, String, Integer, Integer, TransactionStopEventActor> r) {
             return Transaction.builder()
-                              .id(r.value1())
-                              .chargeBoxId(r.value2())
-                              .connectorId(r.value3())
-                              .ocppIdTag(r.value4())
-                              .startTimestamp(r.value5())
-                              .startTimestampFormatted(DateTimeUtils.humanize(r.value5()))
-                              .startValue(r.value6())
-                              .stopTimestamp(r.value7())
-                              .stopTimestampFormatted(DateTimeUtils.humanize(r.value7()))
-                              .stopValue(r.value8())
-                              .stopReason(r.value9())
-                              .chargeBoxPk(r.value10())
-                              .ocppTagPk(r.value11())
-                              .stopEventActor(r.value12())
-                              .build();
+                    .id(r.value1())
+                    .chargeBoxId(r.value2())
+                    .connectorId(r.value3())
+                    .ocppIdTag(r.value4())
+                    .startTimestamp(r.value5())
+                    .startTimestampFormatted(DateTimeUtils.humanize(r.value5()))
+                    .startValue(r.value6())
+                    .stopTimestamp(r.value7())
+                    .stopTimestampFormatted(DateTimeUtils.humanize(r.value7()))
+                    .stopValue(r.value8())
+                    .stopReason(r.value9())
+                    .chargeBoxPk(r.value10())
+                    .ocppTagPk(r.value11())
+                    .stopEventActor(r.value12())
+                    .build();
         }
     }
 }

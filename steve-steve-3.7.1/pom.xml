@@ -298,12 +298,16 @@
                     </archive>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.44.v20210927</version>
+            </plugin>
             <!-- Pre-compiles JSPs -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-jspc-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
+                <version>9.4.44.v20210927</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>

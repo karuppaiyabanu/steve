@@ -55,10 +55,13 @@ import java.util.concurrent.ScheduledExecutorService;
 @Qualifier("ChargePointService12_Client")
 public class ChargePointService12_Client {
 
-    @Autowired protected ScheduledExecutorService executorService;
-    @Autowired protected TaskStore taskStore;
+    @Autowired
+    protected ScheduledExecutorService executorService;
+    @Autowired
+    protected TaskStore taskStore;
 
-    @Autowired private ChargePointService12_InvokerImpl invoker12;
+    @Autowired
+    private ChargePointService12_InvokerImpl invoker12;
 
     protected OcppVersion getVersion() {
         return OcppVersion.V_12;
@@ -76,8 +79,8 @@ public class ChargePointService12_Client {
         ChangeAvailabilityTask task = new ChangeAvailabilityTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forEach(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().changeAvailability(c, task));
+                .forEach(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().changeAvailability(c, task));
 
         return taskStore.add(task);
     }
@@ -86,8 +89,8 @@ public class ChargePointService12_Client {
         ChangeConfigurationTask task = new ChangeConfigurationTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forEach(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().changeConfiguration(c, task));
+                .forEach(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().changeConfiguration(c, task));
 
         return taskStore.add(task);
     }
@@ -96,8 +99,8 @@ public class ChargePointService12_Client {
         ClearCacheTask task = new ClearCacheTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forEach(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().clearCache(c, task));
+                .forEach(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().clearCache(c, task));
 
         return taskStore.add(task);
     }
@@ -106,8 +109,8 @@ public class ChargePointService12_Client {
         GetDiagnosticsTask task = new GetDiagnosticsTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forEach(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().getDiagnostics(c, task));
+                .forEach(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().getDiagnostics(c, task));
 
         return taskStore.add(task);
     }
@@ -116,8 +119,8 @@ public class ChargePointService12_Client {
         ResetTask task = new ResetTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forEach(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().reset(c, task));
+                .forEach(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().reset(c, task));
 
         return taskStore.add(task);
     }
@@ -126,8 +129,8 @@ public class ChargePointService12_Client {
         UpdateFirmwareTask task = new UpdateFirmwareTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forEach(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().updateFirmware(c, task));
+                .forEach(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().updateFirmware(c, task));
 
         return taskStore.add(task);
     }
@@ -137,10 +140,11 @@ public class ChargePointService12_Client {
     // -------------------------------------------------------------------------
 
     public int remoteStartTransaction(RemoteStartTransactionParams params) {
+        System.out.println("working.....");
         RemoteStartTransactionTask task = new RemoteStartTransactionTask(getVersion(), params);
         BackgroundService.with(executorService)
-                         .forFirst(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().remoteStartTransaction(c, task));
+                .forFirst(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().remoteStartTransaction(c, task));
 
         return taskStore.add(task);
     }
@@ -149,8 +153,8 @@ public class ChargePointService12_Client {
         RemoteStopTransactionTask task = new RemoteStopTransactionTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forFirst(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().remoteStopTransaction(c, task));
+                .forFirst(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().remoteStopTransaction(c, task));
 
         return taskStore.add(task);
     }
@@ -159,8 +163,8 @@ public class ChargePointService12_Client {
         UnlockConnectorTask task = new UnlockConnectorTask(getVersion(), params);
 
         BackgroundService.with(executorService)
-                         .forFirst(task.getParams().getChargePointSelectList())
-                         .execute(c -> getOcpp12Invoker().unlockConnector(c, task));
+                .forFirst(task.getParams().getChargePointSelectList())
+                .execute(c -> getOcpp12Invoker().unlockConnector(c, task));
 
         return taskStore.add(task);
     }
