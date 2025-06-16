@@ -211,7 +211,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                         .stream()
                         .filter(TransactionStopServiceHelper::isEnergyValue)
                         .toList();
-        System.out.println("meter values....");
         return new TransactionDetails(new TransactionMapper().map(transaction), values, nextTx);
     }
 

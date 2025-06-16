@@ -73,7 +73,6 @@ public class SessionContextStore {
     }
 
     public void remove(String chargeBoxId, WebSocketSession session) {
-        System.out.println("Session Stoped For this ChargeBox Id = " +chargeBoxId);
         Lock l = locks.get(chargeBoxId);
         l.lock();
         try {

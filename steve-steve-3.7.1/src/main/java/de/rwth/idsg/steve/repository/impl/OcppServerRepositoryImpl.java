@@ -459,7 +459,21 @@ public class OcppServerRepositoryImpl implements OcppServerRepository {
 
     private void batchInsertMeterValues(DSLContext ctx, List<MeterValue> list, int connectorPk, Integer transactionId) {
 
+        String chargeBoxId = ctx.select(CONNECTOR.CHARGE_BOX_ID)
+                .from(CONNECTOR)
+                .where(CONNECTOR.CONNECTOR_PK.eq(connectorPk))
+                .fetchOne(CONNECTOR.CHARGE_BOX_ID);
+        if(list==null){
+            System.out.println("meter values should  null on this ChargePoint id : "+chargeBoxId);
+        }
+
         Customise c = ToGetDataFromRequest.buildCustomiseTable(list, connectorPk, transactionId);
+
+
+
+
+
+
 
         customiseTableService.insert(c);
         List<ConnectorMeterValueRecord> batch =
